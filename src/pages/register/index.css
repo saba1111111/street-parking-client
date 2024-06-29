@@ -2,7 +2,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 80vh;
+}
+
+.navigate-login-button {
+  margin: 20px;
 }
 
 .register-form {

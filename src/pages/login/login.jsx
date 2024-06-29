@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import "./index.css";
 import InputField from "../../components/common/input";
 import { useNavigate } from "react-router-dom";
+import useFetch from "../../hooks/use-fetch";
 
 function LoginPage({ setUser }) {
+  const { post } = useFetch();
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     email: "",
   });
@@ -31,22 +32,15 @@ function LoginPage({ setUser }) {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await fetch("http://localhost:8080/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: formData.email,
-          }),
+        const response = await post("/auth/login", {
+          email: formData.email,
         });
 
-        if (!response.ok) {
+        if (!response.success) {
           throw new Error("Network response was not ok");
         }
 
-        const { data } = await response.json();
-        setUser(data);
+        setUser(response.data);
         navigate("/");
       } catch (error) {
         console.error("Error logging in:", error);
@@ -71,21 +65,30 @@ function LoginPage({ setUser }) {
   };
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleSubmit} className="login-form">
-        <InputField
-          type="email"
-          label="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={errors.email}
-        />
-        <button type="submit" className="login-button">
-          Login
-        </button>
-      </form>
+    <div>
+      <button
+        onClick={() => navigate("/register")}
+        className="navigate-register-button"
+      >
+        Go to register
+      </button>
+
+      <div className="login-container">
+        <form onSubmit={handleSubmit} className="login-form">
+          <InputField
+            type="email"
+            label="Email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.email}
+          />
+          <button type="submit" className="login-button">
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

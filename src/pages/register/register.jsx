@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import "./index.css";
 import InputField from "../../components/common/input";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import useFetch from "../../hooks/use-fetch";
 
 function RegisterPage() {
-  const navigate = useNavigate();
+  const { post } = useFetch();
+  const navigate = useNavigate(); // Initialize useNavigate hook
   const [formData, setFormData] = useState({
     email: "",
     address: "",
@@ -48,24 +50,16 @@ function RegisterPage() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await fetch("http://localhost:8080/auth/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            address: formData.address,
-            full_name: formData.fullName,
-            car_plate_number: formData.carPlateNumber,
-          }),
+        const response = await post("/auth/register", {
+          email: formData.email,
+          address: formData.address,
+          full_name: formData.fullName,
+          car_plate_number: formData.carPlateNumber,
         });
 
-        if (!response.ok) {
+        if (!response.success) {
           throw new Error("Network response was not ok");
         }
-
-        navigate("/login");
 
         setFormData({
           email: "",
@@ -74,6 +68,8 @@ function RegisterPage() {
           carPlateNumber: "",
         });
         setErrors({});
+
+        navigate("/login"); // Navigate to login page after successful registration
       } catch (error) {
         console.error("Error submitting form:", error);
       }
@@ -84,7 +80,6 @@ function RegisterPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log("Name:", name); // Check if name is correctly logged
     setFormData({ ...formData, [name]: value });
   };
 
@@ -98,48 +93,57 @@ function RegisterPage() {
   };
 
   return (
-    <div className="register-container">
-      <form onSubmit={handleSubmit} className="register-form">
-        <InputField
-          type="email"
-          label="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={errors.email}
-        />
-        <InputField
-          type="text"
-          label="Address"
-          name="address"
-          value={formData.address}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={errors.address}
-        />
-        <InputField
-          type="text"
-          label="Full Name"
-          name="fullName"
-          value={formData.fullName}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={errors.fullName}
-        />
-        <InputField
-          type="text"
-          label="Car Plate Number"
-          name="carPlateNumber"
-          value={formData.carPlateNumber}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={errors.carPlateNumber}
-        />
-        <button type="submit" className="register-button">
-          Register
-        </button>
-      </form>
+    <div>
+      <button
+        onClick={() => navigate("/login")}
+        className="navigate-login-button"
+      >
+        Go to Login
+      </button>
+
+      <div className="register-container">
+        <form onSubmit={handleSubmit} className="register-form">
+          <InputField
+            type="email"
+            label="Email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.email}
+          />
+          <InputField
+            type="text"
+            label="Address"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.address}
+          />
+          <InputField
+            type="text"
+            label="Full Name"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.fullName}
+          />
+          <InputField
+            type="text"
+            label="Car Plate Number"
+            name="carPlateNumber"
+            value={formData.carPlateNumber}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.carPlateNumber}
+          />
+          <button type="submit" className="register-button">
+            Register
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

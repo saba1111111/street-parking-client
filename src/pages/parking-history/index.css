@@ -1,0 +1,52 @@
+.parking-history-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.navigate-back-button {
+  margin: 20px;
+}
+
+.parking-history-page h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.parking-history-list {
+  margin-top: 20px;
+}
+
+.parking-history-item {
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.parking-history-item p {
+  margin: 5px 0;
+}
+
+.loading-text {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: #c00;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.no-data-message {
+  text-align: center;
+  margin-top: 20px;
+  font-style: italic;
+  color: #888;
+}

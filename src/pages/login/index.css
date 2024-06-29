@@ -5,6 +5,10 @@
   height: 100vh;
 }
 
+.navigate-register-button {
+  margin: 20px;
+}
+
 .login-form {
   width: 300px;
   padding: 20px;
